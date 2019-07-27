@@ -3,16 +3,15 @@ const puppeteer = require("puppeteer");
 const self = {
   page: null,
   browser: null,
-
   init: async product_url => {
     console.log(product_url);
     self.browser = await puppeteer.launch({
-      headless: false
+      headless: true
     });
     self.page = await self.browser.newPage();
 
     await self.page.goto(product_url, {
-      waitUntil: "networkidle0"
+      waitUntil: "networkidle2"
     });
 
     const result = await self.page.evaluate(() => {
@@ -31,10 +30,43 @@ const self = {
         price
       };
     });
-    console.log(result);
+    await self.browser.close();
 
     return result;
   }
 };
 
 module.exports = self;
+
+// module.exports = {
+//   get: async product_url => {
+//     const browser = await puppeteer.launch({
+//       headless: false
+//     });
+//     console.log(product_url);
+//     const page = await browser.newPage();
+
+//     await page.goto(product_url, {
+//       waitUntil: "networkidle2"
+//     });
+
+//     const result = await page.evaluate(() => {
+//       const title = document.querySelector(
+//         'h1[class="product_title entry-title"]'
+//       ).innerText;
+
+//       const price = parseInt(
+//         document
+//           .querySelector('p[class="price"] span')
+//           .innerText.split(".")
+//           .join("")
+//       );
+//       return {
+//         title,
+//         price
+//       };
+//     });
+//     await browser.close();
+//     return result;
+//   }
+// };
