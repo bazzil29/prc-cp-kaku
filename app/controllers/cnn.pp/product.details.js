@@ -5,13 +5,14 @@ const self = {
   browser: null,
 
   init: async product_url => {
+    console.log(product_url);
     self.browser = await puppeteer.launch({
-      headless: true
+      headless: false
     });
     self.page = await self.browser.newPage();
 
     await self.page.goto(product_url, {
-      waitUntil: "networkidle2"
+      waitUntil: "networkidle0"
     });
 
     const result = await self.page.evaluate(() => {
@@ -30,8 +31,8 @@ const self = {
         price
       };
     });
-
     console.log(result);
+
     return result;
   }
 };

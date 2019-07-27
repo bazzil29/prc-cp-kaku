@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+const uuidv1 = require("uuid");
 
 var productSchema = mongoose.Schema({
   _id: { type: String, default: uuidv1() },
@@ -8,7 +9,9 @@ var productSchema = mongoose.Schema({
   last_get_price: Date,
   last_price: Number,
   old_price: Number,
-  last_change: Date
+  last_change: Date,
+  url: String,
+  shop: Number
 });
 
 //create the model for users and expose it to our app
