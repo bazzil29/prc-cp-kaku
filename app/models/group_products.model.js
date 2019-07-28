@@ -13,8 +13,4 @@ var productsGroupSchema = mongoose.Schema({
 });
 
 //create the model for users and expose it to our app
-module.exports = mongoose.model(
-  "group_products",
-  productsGroupSchema,
-  "ProductsGroup"
-);
+module.exports = mongoose.model("group_products", productsGroupSchema);

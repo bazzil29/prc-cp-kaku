@@ -19,9 +19,13 @@ const self = {
         'h1[class="product_title entry-title"]'
       ).innerText;
 
+      const query = del
+        ? 'span[class="price"] ins span'
+        : 'span[class="price"] span';
+
       const price = parseInt(
         document
-          .querySelector('p[class="price"] span')
+          .querySelector(query)
           .innerText.split(".")
           .join("")
       );

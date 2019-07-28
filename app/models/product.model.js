@@ -1,9 +1,8 @@
 var mongoose = require("mongoose");
-const uuidv1 = require("uuid");
 
 var productSchema = mongoose.Schema({
-  _id: { type: String, default: uuidv1() },
-  sku: String,
+  _id: { type: String },
+  sku: { type: String, default: "code" },
   title: String,
   created_date: Date,
   last_get_price: Date,
@@ -15,4 +14,4 @@ var productSchema = mongoose.Schema({
 });
 
 //create the model for users and expose it to our app
-module.exports = mongoose.model("products", productSchema, "Product");
+module.exports = mongoose.model("products", productSchema);

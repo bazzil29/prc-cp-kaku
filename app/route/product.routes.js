@@ -3,6 +3,10 @@ const router = express.Router();
 
 const userController = require("../controllers/product.controller");
 
-router.post("/new", userController.single);
+router.post("/one", userController.one);
+router.post("/multi", userController.multi);
+router.post("/all", userController.all);
+router.get("/:id", userController.getSingle);
+router.get("/", userController.getAllProduct);
 
 module.exports = router;

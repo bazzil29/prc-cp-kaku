@@ -9,4 +9,4 @@ var shopSchema = mongoose.Schema({
 });
 
 //create the model for users and expose it to our app
-module.exports = mongoose.model("shops", shopSchema, "Shop");
+module.exports = mongoose.model("shops", shopSchema);
