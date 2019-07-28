@@ -6,7 +6,8 @@ const self = {
   init: async product_url => {
     console.log(product_url);
     self.browser = await puppeteer.launch({
-      headless: true
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     self.page = await self.browser.newPage();
 

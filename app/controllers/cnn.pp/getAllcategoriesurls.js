@@ -7,7 +7,8 @@ const self = {
     const cnnUrl = "https://congnghenhat.com";
 
     self.browser = await puppeteer.launch({
-      headless: true
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
 
     self.page = await self.browser.newPage();
