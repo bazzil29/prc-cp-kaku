@@ -2,6 +2,9 @@
   "name": "myapp",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "start": "nodemon app"
+  },
   "dependencies": {
     "async": "latest",
     "basic-auth-connect": "latest",
