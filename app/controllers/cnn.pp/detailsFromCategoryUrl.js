@@ -35,14 +35,13 @@ const self = {
           ),
           title: node.querySelector("h3 a").innerText
         });
-        
       }
 
-      await self.page.close();
-      await self.browser.close();
       return products;
     });
 
+    await self.page.close();
+    await self.browser.close();
     console.log(result);
     return result;
   }
