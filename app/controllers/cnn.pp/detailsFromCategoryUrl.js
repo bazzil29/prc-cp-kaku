@@ -35,7 +35,11 @@ const self = {
           ),
           title: node.querySelector("h3 a").innerText
         });
+        
       }
+
+      await self.page.close();
+      await self.browser.close();
       return products;
     });
 

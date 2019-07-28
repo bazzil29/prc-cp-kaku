@@ -27,6 +27,8 @@ const self = {
       }
       return result;
     });
+    await self.page.close();
+    await self.browser.close();
     return urls;
   }
 };
