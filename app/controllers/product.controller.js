@@ -2,10 +2,13 @@ const getDetails = require("./cnn.pp/product.details");
 const getListUrl = require("./cnn.pp/cnn.urls");
 const Product = require("../models/product.model");
 const Cnn = require("./cnn.pp/product.details");
+const ProductSku = require("../models/productBySku");
 const uuidv1 = require("uuid");
 const cnnGetUrls = require("./cnn.pp/cnn.urls");
 const cnnGetAllUrls = require("./cnn.pp/getAllcategoriesurls");
 const getProductFromCategoryUrl = require("./cnn.pp/detailsFromCategoryUrl");
+
+const wss = require("./wss.pp/oneSku");
 
 const getSingle = async (id = []) => {
   if (!!id) {
@@ -175,6 +178,44 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
+    }
+  },
+  addOrCrawlSku: async (req, res) => {
+    try {
+      const sku = req.body.sku.trim().replace(/\s+/g, "-");
+      const product = await ProductSku.findById(sku);
+      if (!!product) {
+        const productsByShops = await wss.init(sku);
+        if (!!productsByShops && productsByShops.length > 0) {
+          product.shops = productsByShops;
+          await product.save();
+          res.send({ success: true });
+        } else {
+          res.send({
+            success: false
+          });
+        }
+      } else {
+        const productsByShops = await wss.init(sku);
+        if (!!productsByShops && productsByShops.length > 0) {
+          const newProductSku = await new ProductSku({
+            _id: sku,
+            title: productsByShops[0].title,
+            shops: productsByShops
+          });
+          await newProductSku.save();
+          res.send({ success: true });
+        } else {
+          res.send({
+            success: false
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      res.send({
+        success: false
+      });
     }
   }
 };

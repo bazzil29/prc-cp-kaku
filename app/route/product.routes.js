@@ -8,5 +8,5 @@ router.post("/multi", userController.multi);
 router.post("/all", userController.all);
 router.get("/:id", userController.getSingle);
 router.get("/", userController.getAllProduct);
-
+router.post("/sku", userController.addOrCrawlSku);
 module.exports = router;

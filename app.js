@@ -36,9 +36,9 @@ require("./config/passport")(passport); // pass passport for configuration
 app.use(morgan("dev")); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(formidable());
+// app.use(bodyParser.urlencoded());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(formidable());
 
 //view engine setup
 app.use(express.static(path.join(__dirname, "public")));
@@ -65,7 +65,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require("./config/routes.js")(app, passport); // load our routes and pass in our app and fully configured passport
 
 //launch ======================================================================
-app.listen(process.env.PORT||port);
+app.listen(8042);
 console.log("The magic happens on port " + port);
 
 //catch 404 and forward to error handler
