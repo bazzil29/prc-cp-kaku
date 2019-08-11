@@ -185,9 +185,10 @@ module.exports = {
       const sku = req.body.sku.trim().replace(/\s+/g, "-");
       const product = await ProductSku.findById(sku);
       if (!!product) {
-        const productsByShops = await wss.init(sku);
+        const { productsByShops, type } = await wss.init(sku);
         if (!!productsByShops && productsByShops.length > 0) {
           product.shops = productsByShops;
+          product.type = type;
           await product.save();
           res.send({ success: true });
         } else {
@@ -196,12 +197,13 @@ module.exports = {
           });
         }
       } else {
-        const productsByShops = await wss.init(sku);
+        const { productsByShops, type } = await wss.init(sku);
         if (!!productsByShops && productsByShops.length > 0) {
           const newProductSku = await new ProductSku({
             _id: sku,
             title: productsByShops[0].title,
-            shops: productsByShops
+            shops: productsByShops,
+            type: type
           });
           await newProductSku.save();
           res.send({ success: true });
