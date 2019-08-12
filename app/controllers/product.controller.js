@@ -7,6 +7,7 @@ const uuidv1 = require("uuid");
 const cnnGetUrls = require("./cnn.pp/cnn.urls");
 const cnnGetAllUrls = require("./cnn.pp/getAllcategoriesurls");
 const getProductFromCategoryUrl = require("./cnn.pp/detailsFromCategoryUrl");
+const CategoryType = require("../models/category_type.model");
 
 const wss = require("./wss.pp/oneSku");
 
@@ -180,15 +181,86 @@ module.exports = {
       console.log(error);
     }
   },
+
+  // --------------------------------------------
+
+  getAProductSku: async (req, res) => {
+    try {
+      const sku = req.body.sku;
+      const product = await ProductSku.findById(sku);
+      if (product) {
+        res.send({
+          success: true,
+          product
+        });
+      } else {
+        res.send({
+          success: false
+        });
+      }
+    } catch (error) {
+      res.send({
+        success: false
+      });
+    }
+  },
+
+  getProductSkuByType: async (req, res) => {
+    try {
+      const { type } = req.body;
+      const products = await ProductSku.find({ type: type });
+      if (!!products) {
+        res.send({
+          success: true,
+          products,
+          type: type
+        });
+      } else {
+        res.send({
+          success: false
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.send({
+        success: false
+      });
+    }
+  },
+  getAllTypeProductSku: async (req, res) => {
+    try {
+      const types = await CategoryType.find();
+      res.send({
+        success: true,
+        types: types
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        success: false
+      });
+    }
+  },
   addOrCrawlSku: async (req, res) => {
     try {
-      const sku = req.body.sku.trim().replace(/\s+/g, "-");
+      const sku = req.body.sku
+        .trim()
+        .replace(/\s+/g, "-")
+        .toUpperCase();
       const product = await ProductSku.findById(sku);
       if (!!product) {
         const { productsByShops, type } = await wss.init(sku);
         if (!!productsByShops && productsByShops.length > 0) {
           product.shops = productsByShops;
           product.type = type;
+          console.log(type);
+          const _type = await CategoryType.findById(type);
+          if (!!!_type) {
+            const new_type = await new CategoryType({
+              _id: type
+            });
+            await new_type.save();
+          }
           await product.save();
           res.send({ success: true });
         } else {
@@ -205,6 +277,14 @@ module.exports = {
             shops: productsByShops,
             type: type
           });
+          console.log(type);
+          const _type = await CategoryType.findById(type);
+          if (!!!_type) {
+            const new_type = await new CategoryType({
+              _id: type
+            });
+            await new_type.save();
+          }
           await newProductSku.save();
           res.send({ success: true });
         } else {

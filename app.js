@@ -1,4 +1,5 @@
 var express = require("express");
+var cors = require("cors");
 
 var app = express();
 var multer = require("multer");
@@ -23,6 +24,7 @@ var now = new Date();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 /***************Mongodb configuratrion********************/
 var mongoose = require("mongoose");

@@ -9,4 +9,8 @@ router.post("/all", userController.all);
 router.get("/:id", userController.getSingle);
 router.get("/", userController.getAllProduct);
 router.post("/sku", userController.addOrCrawlSku);
+router.post("/sku/one", userController.getAProductSku);
+router.get("/sku/types", userController.getAllTypeProductSku);
+router.post("/sku/types", userController.getProductSkuByType);
+
 module.exports = router;
