@@ -79,6 +79,7 @@ const self = {
       return result;
 
       // ------------
+      // ??------
       // await Promise.all([
       //   self.page.click(`a[href="${link}"]`),
       //   self.page.waitForNavigation({ waitUntil: "domcontentloaded" })
