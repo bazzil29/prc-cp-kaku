@@ -7,12 +7,12 @@
             "name":"congnghenhat.com"
         },
         {
-            "searchUrl":"",
+            "searchUrl":"https://www.hangnhat123.com/index.php?route=product/search&search=",
             "type":"opencart",
             "name":"hangnhat123.com"
         },
         {
-            "searchUrl":"",
+            "searchUrl":"https://www.kaku.vn/catalogsearch/result/?q=",
             "type":"magento2",
             "name":"kaku.vn"
         }

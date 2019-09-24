@@ -13,4 +13,6 @@ router.post("/sku/one", userController.getAProductSku);
 router.get("/sku/types", userController.getAllTypeProductSku);
 router.post("/sku/types", userController.getProductSkuByType);
 
+router.post("/v2/")
+
 module.exports = router;

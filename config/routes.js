@@ -2,6 +2,7 @@ var userController = require("../app/controllers/user.controller");
 const session = require("../app/middlewares/session.middleware");
 const productRouter = require("../app/route/product.routes");
 const cors = require("cors");
+const productRouterV2 = require("../app/route/v2/products.routes");
 
 //you can include all your controllers
 
@@ -33,4 +34,5 @@ module.exports = function(app, passport) {
   );
 
   app.use("/products", productRouter);
+  app.use("/v2/products",productRouterV2)
 };
