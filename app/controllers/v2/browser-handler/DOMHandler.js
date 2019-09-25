@@ -6,7 +6,8 @@ module.exports = {
         
                     const productContainer = document.getElementsByClassName("summary entry-summary")[0];
                     console.log(productContainer)
-                    const price = productContainer.getElementsByClassName("woocommerce-Price-amount amount")[0].innerText.split('.').join("");
+                    const prices = productContainer.getElementsByClassName("woocommerce-Price-amount amount");
+                    const price = prices[prices.length >=1?1:0].innerText.split('.').join("");
                     return {
                         price:price,
                         url:location.href
