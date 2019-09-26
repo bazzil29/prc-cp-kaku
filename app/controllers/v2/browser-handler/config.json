@@ -15,6 +15,11 @@
             "searchUrl":"https://www.kaku.vn/catalogsearch/result/?q=",
             "type":"magento2",
             "name":"kaku.vn"
+        },
+        {
+            "searchUrl":"https://www.donhatnoidia.com/search?type=product&q=",
+            "type":"shopify",
+            "name":"donhatnoidia.com"
         }
     ]
 }

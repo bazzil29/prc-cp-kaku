@@ -129,6 +129,22 @@ module.exports = {
             console.log(error);
         }
     },
+    searchAll:async (req, res)=>{
+        try {
+            const skus = (await Sku.find()).map(e=>e._id);
+            for(let i = 0; i<skus.length; i++){
+                await searchOneProduct(skus[i])
+            }
+            res.json({
+                success: true
+            })
+        } catch (error) {
+            console.log(error);
+            res.json({
+                success:false
+            })
+        }
+    },
     getShops: async (req, res)=>{
         try {
             const shops = await Shop.find();
@@ -172,6 +188,20 @@ module.exports = {
             console.log(res)
             res.json({
                 success:false
+            })
+        }
+    },
+    deleteAll:async(req,res)=>{
+        try {
+            await Sku.deleteMany({});
+            await Product.deleteMany({});
+            res.json({
+                success: true
+            })
+        } catch (error) {
+            console.log(error);
+            res.json({
+                success: false
             })
         }
     }
