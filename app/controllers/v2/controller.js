@@ -19,17 +19,29 @@ const searchOneProduct = async (_sku)=>{
         const sku = _sku;;
         const Skus = (await Sku.find()).map(e=>e._id);
         if(!!Skus.includes(sku)){
-            const Products = await shopSkuBySku(sku)
-            console.log(Products);
+            const Products = await shopSkuBySku(sku);
             for(let i = 0 ; i < Products.length; i++){
-                const shop = shops.find(e=>e.name===Products[i].shop);
-                const goUrl = shop.searchUrl + sku;
-                const product = await Crawler.ini(goUrl,Handler[shop.type])
-                console.log(product)
-                if(!!product){
-                    Products[i].price = product.price;
-                    Products[i].url = product.url;
-                    await Products[i].save;
+                if(!!Products[i]){
+                    const shop = shops.find(e=>e.name===Products[i].shop);
+                    const goUrl = shop.searchUrl + sku;
+                    if(!!Products[i].shopSku){
+                        const product = await Crawler.ini(goUrl,Handler[shop.type].search)
+                            console.log(product)
+                            if(!!product){
+                                Products[i].price = product.price;
+                                Products[i].url = product.url;
+                                await Products[i].save();
+                            }
+                    }else{
+                        if(!!Products[i].url){
+                            const price = await Crawler.ini(Products[i].url,Handler[shop.type].fixUrl)
+                            console.log(price)
+                            if(!!price){
+                                Products[i].price = price;
+                                await Products[i].save();
+                            }
+                        }
+                    }    
                 }
             }
             return true;
@@ -41,7 +53,8 @@ const searchOneProduct = async (_sku)=>{
             const shops = config.shops;
             for(let i = 0; i<shops.length ;i++){
                 const goUrl = shops[i].searchUrl + sku;
-                const product = await Crawler.ini(goUrl,Handler[shops[i].type]);
+                const product = await Crawler.ini(goUrl,Handler[shops[i].type].search);
+                console.log(product);
                 if(!!product){
                     const Products = await shopSkuBySku(sku);
                     const tmpProduct = Products.find(e=>product.url.includes(e.shop))
@@ -80,7 +93,6 @@ module.exports = {
     getSkus:async (req,res)=>{
         try {
             const Skus = await Sku.find();
-            
             res.json({
                 data: Skus,
                 success: !!Skus
@@ -95,7 +107,6 @@ module.exports = {
     getShopProducts: async (req,res)=>{
         try {
             const shop = req.params.shop;
-            console.log(shop);
             const products = await Product.find({shop:shop});
             res.json({
                 success: !!products,
@@ -116,7 +127,7 @@ module.exports = {
                         .replace(/\s+/g, "-")
                         .toUpperCase();
 
-            if(await searchOneProduct(sku)){
+            if(!!sku&&await searchOneProduct(sku)){
                 res.json({
                     success: true
                 })
@@ -163,13 +174,18 @@ module.exports = {
                         .trim()
                         .replace(/\s+/g, "-")
                         .toUpperCase();
-            await Sku.deleteOne({_id:sku});
-            await Product.deleteMany({sku:sku})
+            if(!!sku){
+                await Sku.deleteOne({_id:sku});
+                await Product.deleteMany({sku:sku})
 
-            res.json({
-                success: true
-            })
-
+                res.json({  
+                    success: true
+                })
+            }else{
+                res.json({
+                    success: false
+                })
+            } 
         } catch (error) {
             console.log(error);
             res.json({
@@ -204,5 +220,38 @@ module.exports = {
                 success: false
             })
         }
+    },
+    editProduct:async (req, res)=>{
+        try {
+            const newUrl = req.body.url.trim();
+            const shop = req.params.shop.trim();
+            const sku = req.params.sku
+                        .trim()
+                        .replace(/\s+/g, "-")
+                        .toUpperCase();
+            if(!!newUrl){
+                const product = await Product.findOne({
+                    sku:sku,
+                    shop:shop
+                })
+                if(newUrl.includes(shop)){
+                    product.url = newUrl;
+                    await product.save();
+                    res.json({
+                        success:true
+                    })
+                }else{
+                    res.json({
+                        success:false
+                    })
+                } 
+            }
+        } catch (error) {
+            console.log(error)
+            res.json({
+                success:false
+            })
+        }
+        
     }
 }
