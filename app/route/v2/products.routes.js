@@ -6,6 +6,7 @@ const productController = require("../../controllers/v2/controller");
 router.get("/shops", productController.getShops);
 router.get("/sku", productController.getSkus);
 router.delete("/sku/:sku", productController.deleteSku);
+router.get("/sku/:sku", productController.getProductsBySku);
 router.post("/one", productController.searchProduct);
 router.get("/all", productController.searchAll);
 router.delete("/all", productController.deleteAll);

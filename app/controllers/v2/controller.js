@@ -253,5 +253,27 @@ module.exports = {
             })
         }
         
+    },
+    getProductsBySku :async (req,res)=>{
+        try {
+            const sku = req.params.sku
+                        .trim()
+                        .replace(/\s+/g, "-")
+                        .toUpperCase();
+            if(!!sku){
+                const products = await Product.find({
+                    sku: sku
+                })
+                res.json({
+                    success:!!products,
+                    products:!!products?products:[]
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            res.json({
+                success:false
+            })
+        }
     }
 }

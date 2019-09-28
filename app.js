@@ -27,10 +27,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 /***************Mongodb configuratrion********************/
+
 var mongoose = require("mongoose");
 var configDB = require("./config/database.js");
 //configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(configDB.url,{ server: { 
+  // sets how many times to try reconnecting
+  reconnectTries: Number.MAX_VALUE,
+  // sets the delay between every retry (milliseconds)
+  reconnectInterval: 1000 
+  },
+  useNewUrlParser: true 
+}); // connect to our database
 
 require("./config/passport")(passport); // pass passport for configuration
 
