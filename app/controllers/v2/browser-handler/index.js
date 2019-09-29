@@ -3,7 +3,7 @@ const handler = require("./DOMHandler");
 let config = require("./config.json"); 
 
 (async () => {
-    const url = "https://www.donhatnoidia.com/collections/dien-lanh/products/tu-lanh-hitachi-r-wx74k?variant=29416753299490";
-    const a = await test.ini(url,handler[config.shops[3].type].fixUrl);
+    const url = "https://thietbinhat.com.vn/?s=ht-k6s";
+    const a = await test.ini(url,handler[config.shops[5].type].search);
     console.log(a);
 })();

@@ -20,6 +20,16 @@
             "searchUrl":"https://www.donhatnoidia.com/search?type=product&q=",
             "type":"shopify",
             "name":"donhatnoidia.com"
+        },
+        {
+            "searchUrl":"https://japanshoptht.vn/tim?q=",
+            "type":"bootstrap1",
+            "name":"japanshoptht.vn"
+        },
+        {
+            "searchUrl":"https://thietbinhat.com.vn/?s=",
+            "type":"bootstrap2",
+            "name":"thietbinhat.com.vn"
         }
     ]
 }

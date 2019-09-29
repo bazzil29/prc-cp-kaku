@@ -127,5 +127,77 @@ module.exports = {
                 return false;
             }
         }
+    },
+    bootstrap1:{
+        search:()=>{
+            try {
+                const productsContainer = document.querySelectorAll(".category-child")[0];
+                const products = productsContainer.querySelectorAll(".product");
+                if(products.length!==1){
+                    return false
+                }else{
+                    const product = products[0].querySelector(".product-info");
+                    const price = product.querySelector(".price").innerText.split("₫")[0].split(".").join("");
+                    const url =  product.querySelector("a").href;
+                    return {
+                        price,url
+                    }
+                }
+            } catch (error) {
+                return false;
+            }
+        },
+        fixUrl:()=>{
+            try {
+                const productContainer = document.querySelector("#product-single");
+                if(!!productContainer){
+                    const price = document.querySelector(".price-pro-detail").innerText.split(".").join("");
+                    return !!price?price:false;
+                }
+                else{
+                    return false;
+                }
+            } catch (error) {
+                return false;
+            }
+        }
+    },
+    bootstrap2:{
+        search:()=>{
+            const productsContainer = document.querySelector("#search-result");
+            const products = productsContainer.querySelectorAll(".product-item");
+            if(!!products&&products.length!=1){
+                console.log(products)
+                return false;
+            }else{
+                const tmp  = products[0].querySelector(".price").innerText.split("VNĐ");
+                const url =  products[0].querySelector("a").href;
+                if(tmp.length===3){
+                    const price = tmp[1].trim().split(" ")[2].split(".").join("");
+                    return {price:!!price?price:false,url:url}
+                }else{
+                    const price = tmp[0].trim().split(".").join("");
+                    return {price:!!price?price:false,url:url}
+                }
+            }
+            
+        },
+        fixUrl:()=>{
+            try {
+                const test =  document.getElementsByClassName("attribute");
+                const tmp = [];
+                for(let i = 0; i<test.length;i++){
+                    const text = test[i].querySelector("strong").innerText;
+                    if(text =="Giá niêm yết:"||text=="Giá khuyến mãi:"){
+                        tmp.push(test[i]);
+                    }
+                }
+                const price =   tmp[tmp.length-1].innerText.split(" ")[3].split(".").join("");
+                return !!price?price:false    
+            } catch (error) {
+                return false;
+            }
+            
+        }
     }
 }
