@@ -61,7 +61,7 @@ app.set("view engine", "ejs");
 
 app.use(
   session({
-    secret: "I Love India...",
+    secret: "yepyep",
     resave: true,
     saveUninitialized: true
   })
